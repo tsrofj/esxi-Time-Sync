@@ -1,0 +1,7 @@
+# Cluster input for Compare-EsxiTimeSync.ps1
+# Key/value format supports : or =
+# Valid keys: ClusterName, vCenterServer (DNS name or IP address)
+# Aliases for vCenterServer: vCenterIp, vCenterAddress, IP
+
+ClusterName: Production Cluster
+vCenterServer: vcsa01.domain.local

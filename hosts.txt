@@ -1,0 +1,5 @@
+# ESXi hosts list for Compare-EsxiTimeSync.ps1
+# One host per line. Blank lines and lines beginning with # are ignored.
+
+# esx01.domain.local
+# esx02.domain.local
