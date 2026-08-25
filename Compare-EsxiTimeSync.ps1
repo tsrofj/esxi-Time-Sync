@@ -1,6 +1,7 @@
 #Requires -Version 5.1
 [CmdletBinding(DefaultParameterSetName = 'Cluster', SupportsShouldProcess = $true, ConfirmImpact = 'High')]
 param(
+    # Optional manual ESXi host list: one hostname or IP address per line. Use -HostFile to bypass vCenter cluster discovery.
     [Parameter(ParameterSetName = 'HostFile')]
     [string]$HostFile,
 

@@ -55,11 +55,13 @@ vCenterServer: 192.0.2.10
 
 ### Query hosts from a text file
 
+`hosts.txt` is an optional manual target list. Use it to bypass vCenter cluster discovery when PowerCLI or vCenter is unavailable, or when you need to audit a specific subset of ESXi hosts.
+
 ```powershell
 .\Compare-EsxiTimeSync.ps1 -HostFile .\hosts.txt
 ```
 
-Create `hosts.txt`, one ESXi host per line:
+Create `hosts.txt`, with one ESXi host DNS name or IP address per line:
 
 ```text
 esx01.domain.local
