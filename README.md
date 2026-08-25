@@ -10,7 +10,6 @@ Track scripts, notes, and configuration related to ESXi time sync and NTP/Chrony
 
 - [Compare-EsxiTimeSync.ps1](Compare-EsxiTimeSync.ps1)
 - [Compare-EsxiTimeSync.py](Compare-EsxiTimeSync.py)
-- [requirements.txt](requirements.txt)
 
 ## Requirements
 
@@ -18,7 +17,9 @@ Track scripts, notes, and configuration related to ESXi time sync and NTP/Chrony
 - Posh-SSH for SSH connections to ESXi hosts
 - VMware PowerCLI if you want to discover hosts from a vSphere cluster
 - SSH access to each ESXi host, typically with the `root` account
-- Python 3.9 or later with the packages in `requirements.txt` for the Python implementation
+- Python 3.9 or later for the Python implementation
+- `paramiko>=3.5` for ESXi SSH connections from Python
+- `pyvmomi>=8.0` for vCenter cluster discovery from Python
 
 ## What the script collects
 
@@ -41,25 +42,29 @@ The script gathers the following from each ESXi host:
 
 ## How to use
 
-### Python implementation
+### Python 3
 
-Install the required packages, then run the Python 3 version. It uses `clusternames.txt` by default and prompts for vCenter and ESXi SSH credentials.
+Run these commands from the directory containing `Compare-EsxiTimeSync.py`. The Python script uses `clusternames.txt` by default and prompts for vCenter and ESXi SSH credentials.
 
-```powershell
-python -m pip install -r .\requirements.txt
-python .\Compare-EsxiTimeSync.py
+```sh
+python -m pip install "paramiko>=3.5" "pyvmomi>=8.0"
+python Compare-EsxiTimeSync.py
 ```
 
 Use the optional manual host list or provide cluster values directly:
 
-```powershell
-python .\Compare-EsxiTimeSync.py --host-file .\hosts.txt
-python .\Compare-EsxiTimeSync.py --cluster-name 'Production Cluster' --vcenter-server vcsa01.domain.local
+```sh
+python Compare-EsxiTimeSync.py --host-file hosts.txt
+python Compare-EsxiTimeSync.py --cluster-name "Production Cluster" --vcenter-server vcsa01.domain.local
 ```
 
 The Python version accepts self-signed vCenter certificates by default. Add `--verify-vcenter-certificate` to require a trusted certificate. To restart NTP after collection, provide both `--restart-ntp` and `--yes`.
 
-### Query the cluster in clusternames.txt (default)
+### Windows PowerShell
+
+Run these commands from the directory containing `Compare-EsxiTimeSync.ps1`.
+
+#### Query the cluster in clusternames.txt (default)
 
 ```powershell
 .\Compare-EsxiTimeSync.ps1
@@ -74,7 +79,7 @@ vCenterServer: 192.0.2.10
 
 `vCenterServer` accepts either a DNS name or IP address. You can also use `vCenterIp` or `vCenterAddress` as the key. Blank lines and lines starting with `#` are ignored.
 
-### Query hosts from a text file
+#### Query hosts from a text file
 
 `hosts.txt` is an optional manual target list. Use it to bypass vCenter cluster discovery when PowerCLI or vCenter is unavailable, or when you need to audit a specific subset of ESXi hosts.
 
@@ -89,14 +94,14 @@ esx01.domain.local
 esx02.domain.local
 ```
 
-### Query a vSphere cluster
+#### Query a vSphere cluster
 
 ```powershell
 Connect-VIServer vcsa01.domain.local
 .\Compare-EsxiTimeSync.ps1 -ClusterName 'Production Cluster' -vCenterServer vcsa01.domain.local
 ```
 
-### Query a vSphere cluster from a text file
+#### Query a vSphere cluster from a text file
 
 Create a file such as `clusternames.txt`:
 
