@@ -1,6 +1,6 @@
 # ESXi Time Sync
 
-This sub-project is reserved for ESXi time synchronization work under AgPartnersCoop.
+This project contains scripts and configuration for validating ESXi time synchronization.
 
 ## Purpose
 
